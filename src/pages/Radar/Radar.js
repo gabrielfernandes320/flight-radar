@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import "./Radar.scss";
-import Form, { Item, Label } from "devextreme-react/form";
+import Form, {
+  Item,
+  Label,
+  ButtonItem,
+  ButtonOptions,
+} from "devextreme-react/form";
+import airplane from "./Emojione_2708.svg";
+import Popup from "devextreme/ui/popup";
+import { TextBox, TextArea } from "devextreme-react";
 import {
   Chart,
   CommonSeriesSettings,
@@ -9,346 +17,172 @@ import {
   ArgumentAxis,
   ValueAxis,
   Legend,
+  Export,
+  Grid,
+  Border,
+  Tooltip,
+  CommonPaneSettings,
 } from "devextreme-react/chart";
 import { Button } from "devextreme-react";
+import DataEntry from "./DataEntry";
 
-const XEditorOptions = {
-  stylingMode: "filled",
-  placeholder: "X",
-};
+export default function () {
+  const formData = useRef({});
+  const data = [
+    {
+      x: 2,
+      y: 5,
+    },
+    {
+      x: 6,
+      y: 8,
+    },
+    {
+      x: -5,
+      y: 6,
+    },
+  ];
 
-const YEditorOptions = {
-  stylingMode: "filled",
-  placeholder: "Y",
-};
+  const [x, setX] = useState(null);
+  const [y, setY] = useState(null);
 
-const RaioEditorOptions = {
-  stylingMode: "filled",
-  placeholder: "Raio",
-};
-const AnguloEditorOptions = {
-  stylingMode: "filled",
-  placeholder: "Angulo",
-};
-const VelocidadeEditorOptions = {
-  stylingMode: "filled",
-  placeholder: "Velocidade",
-};
-const DirecaoEditorOptions = {
-  stylingMode: "filled",
-  placeholder: "Direcao",
-};
-const funcRastrEditorOptions = {
-  stylingMode: "filled",
-  placeholder: "Distancia Minima",
-};
+  const onSubmit = (e) => {
+    e.preventDefault();
+    data.push({ x: x, y: y });
+  };
 
-const data = [
-  {
-    x1: 2,
-    y1: 5,
-  },
-  {
-    x1: 6,
-    y1: 8,
-    x2: 5,
-    y2: 9,
-  },
-  {
-    x1: -5,
-    y1: 6,
-  },
-];
+  const XEditorOptions = {
+    stylingMode: "filled",
+    placeholder: "X",
+  };
 
-export default () => (
-  <React.Fragment>
-    <h2 className={"content-block"}>Radar</h2>
-    <div className={"content-block"}>
-      <div className={"adx-card responsive-paddings"}>
-        <Form colCount={3}>
-          <Item>
-            <div className={"dx-card responsive-paddings"}>
+  const YEditorOptions = {
+    stylingMode: "filled",
+    placeholder: "Y",
+  };
+
+  const RaioEditorOptions = {
+    stylingMode: "filled",
+    placeholder: "Raio",
+  };
+  const AnguloEditorOptions = {
+    stylingMode: "filled",
+    placeholder: "Angulo",
+  };
+  const VelocidadeEditorOptions = {
+    stylingMode: "filled",
+    placeholder: "Velocidade",
+  };
+  const DirecaoEditorOptions = {
+    stylingMode: "filled",
+    placeholder: "Direcao",
+  };
+  const funcRastrEditorOptions = {
+    stylingMode: "filled",
+    placeholder: "Distancia Minima",
+  };
+
+  const valueChanged = (data) => {
+    console.log(data);
+  };
+
+  return (
+    <React.Fragment>
+      <div className={"content-block"}>
+        <div className={"dx-card responsive-paddings"}>
+          <Form colCount={1}>
+            <Item>
               <h2 className={"content-block"}>Entrada de dados</h2>
-              <Form colCount={2}>
-                <Item
-                  dataField={"x"}
-                  editorType={"dxTextBox"}
-                  editorOptions={XEditorOptions}
-                >
-                  <Label visible={false} text="X" />
-                </Item>
-                <Item
-                  dataField={"y"}
-                  editorType={"dxTextBox"}
-                  editorOptions={YEditorOptions}
-                >
-                  <Label visible={false} text="X" />
-                </Item>
-                <Item
-                  dataField={"angulo"}
-                  editorType={"dxTextBox"}
-                  editorOptions={AnguloEditorOptions}
-                >
-                  <Label visible={false} text="X" />
-                </Item>
-                <Item
-                  dataField={"raio"}
-                  editorType={"dxTextBox"}
-                  editorOptions={RaioEditorOptions}
-                >
-                  <Label visible={false} text="X" />
-                </Item>
-                <Item
-                  dataField={"direcao"}
-                  editorType={"dxTextBox"}
-                  editorOptions={DirecaoEditorOptions}
-                >
-                  <Label visible={false} text="X" />
-                </Item>
-                <Item
-                  dataField={"velocidade"}
-                  editorType={"dxTextBox"}
-                  editorOptions={VelocidadeEditorOptions}
-                >
-                  <Label visible={false} text="X" />
-                </Item>
-                <Item>
-                  <Button
-                    className="form-btn"
-                    style={{ "margin-top": "10px" }}
-                    text="Inserir"
-                    type="default"
-                    stylingMode="contained"
-                  />
-                </Item>
-              </Form>
-            </div>
-            <div className={"dx-card responsive-paddings"}>
-              <h2 className={"content-block"}>Funcoes de Transformacao</h2>
-              <div id="second-line">
-                <Form colCount={2}>
+              <form className={"login-form"} onSubmit={onSubmit}>
+                <Form formData={formData.current} colCount={2}>
                   <Item>
-                    <div id="translandar">
-                      <h2 className={"content-block"}>Transladar</h2>
-                      <Form colCount={2}>
-                        <Item
-                          dataField={"x"}
-                          editorType={"dxTextBox"}
-                          editorOptions={XEditorOptions}
-                        >
-                          <Label visible={false} text="X" />
-                        </Item>
-                        <Item
-                          dataField={"y"}
-                          editorType={"dxTextBox"}
-                          editorOptions={YEditorOptions}
-                        >
-                          <Label visible={false} text="X" />
-                        </Item>
-                        <Item>
-                          <Button
-                            className="form-btn"
-                            style={{ "margin-top": "10px" }}
-                            text="Translandar"
-                            type="default"
-                            stylingMode="contained"
-                          />
-                        </Item>
-                      </Form>
-                    </div>
+                    <TextBox
+                      defaultValue="Smith"
+                      showClearButton={true}
+                      placeholder="Enter full name"
+                      valueChangeEvent="keyup"
+                      onValueChanged={valueChanged}
+                    />
                   </Item>
-                  <Item>
-                    <div id="escalonar">
-                      <h2 className={"content-block"}>Escalonar</h2>
-                      <Form colCount={2}>
-                        <Item
-                          dataField={"x"}
-                          editorType={"dxTextBox"}
-                          editorOptions={XEditorOptions}
-                        >
-                          <Label visible={false} text="X" />
-                        </Item>
-                        <Item
-                          dataField={"y"}
-                          editorType={"dxTextBox"}
-                          editorOptions={YEditorOptions}
-                        >
-                          <Label visible={false} text="X" />
-                        </Item>
-                        <Item>
-                          <Button
-                            className="form-btn"
-                            style={{ "margin-top": "10px" }}
-                            text="Escalonar"
-                            type="default"
-                            stylingMode="contained"
-                          />
-                        </Item>
-                      </Form>
-                    </div>
+                  <Item
+                    dataField={"y"}
+                    editorType={"dxTextBox"}
+                    editorOptions={YEditorOptions}
+                  >
+                    <Label visible={false} text="X" />
                   </Item>
-                  <Item>
-                    <div id="Angulo">
-                      <Form colCount={1}>
-                        <Item
-                          dataField={"Angulo"}
-                          editorType={"dxTextBox"}
-                          editorOptions={{
-                            stylingMode: "filled",
-                            placeholder: "Angulo",
-                          }}
-                        >
-                          <Label visible={false} text="Angulo" />
-                        </Item>
-
-                        <Item>
-                          <Button
-                            className="form-btn"
-                            style={{ "margin-top": "10px" }}
-                            text="Rotacionar"
-                            type="default"
-                            stylingMode="contained"
-                          />
-                        </Item>
-                      </Form>
-                    </div>
+                  <Item
+                    dataField={"angulo"}
+                    editorType={"dxTextBox"}
+                    editorOptions={AnguloEditorOptions}
+                  >
+                    <Label visible={false} text="X" />
                   </Item>
-                  <Item>
-                    <div id="x">
-                      <Form colCount={2}>
-                        <Item
-                          dataField={"X"}
-                          editorType={"dxTextBox"}
-                          editorOptions={{
-                            stylingMode: "filled",
-                            placeholder: "X",
-                          }}
-                        >
-                          <Label visible={false} text="X" />
-                        </Item>
-                        <Item
-                          dataField={"X"}
-                          editorType={"dxTextBox"}
-                          editorOptions={{
-                            stylingMode: "filled",
-                            placeholder: "Y",
-                          }}
-                        >
-                          <Label visible={false} text="X" />
-                        </Item>
-                      </Form>
-                    </div>
+                  <Item
+                    dataField={"raio"}
+                    editorType={"dxTextBox"}
+                    editorOptions={RaioEditorOptions}
+                  >
+                    <Label visible={false} text="X" />
                   </Item>
+                  <Item
+                    dataField={"direcao"}
+                    editorType={"dxTextBox"}
+                    editorOptions={DirecaoEditorOptions}
+                  >
+                    <Label visible={false} text="X" />
+                  </Item>
+                  <Item
+                    dataField={"velocidade"}
+                    editorType={"dxTextBox"}
+                    editorOptions={VelocidadeEditorOptions}
+                  >
+                    <Label visible={false} text="X" />
+                  </Item>
+                  <ButtonItem>
+                    <ButtonOptions
+                      width={"100%"}
+                      type={"default"}
+                      useSubmitBehavior={true}
+                    >
+                      <span className="dx-button-text">Inserir</span>
+                    </ButtonOptions>
+                  </ButtonItem>
                 </Form>
-              </div>
-            </div>
-            <div className="dx-card responsive-paddings">
-              <h2 className={"content-block"}>Funcoes de Rastreamento</h2>
-              <Form colCount={1}>
-                <Item
-                  dataField={"funcoesRastreamento"}
-                  editorType={"dxTextBox"}
-                  editorOptions={funcRastrEditorOptions}
+              </form>
+            </Item>
+            <Item>
+              <h2 className={"content-block"}>Radar</h2>
+              <Chart
+                size={{ width: "auto", height: "600" }}
+                className="chart"
+                dataSource={data}
+              >
+                <CommonSeriesSettings type="scatter" />
+                <Series argumentField="x" valueField="y">
+                  <Point image={airplane} />
+                </Series>
+                <ArgumentAxis
+                  defaultVisualRange={[-30, 30]}
+                  tickInterval={1}
+                  customPosition={0}
+                  offset={0}
                 >
-                  <Label visible={false} text="X" />
-                </Item>
-                <Item>
-                  <Button
-                    className="form-btn"
-                    style={{ "margin-top": "10px" }}
-                    text="Avioes proximos ao aeroporto"
-                    type="default"
-                    stylingMode="contained"
-                  />
-                </Item>
-              </Form>
-            </div>
-          </Item>
-          <Item>
-            <Form>
-              <Item>
-                <div className="dx-card responsive-paddings">
-                  <h2 className={"content-block"}>Radar</h2>
-                  <Chart id="chart" dataSource={data}>
-                    <CommonSeriesSettings type="scatter" />
-                    <Series argumentField="x1" valueField="y1" />
-                    <Series argumentField="x2" valueField="y2">
-                      <Point symbol="triangleDown" />
-                    </Series>
-                    <ArgumentAxis
-                      defaultVisualRange={[-20, 20]}
-                      customPosition={0}
-                      offset={0}
-                    />
-                    <ValueAxis
-                      defaultVisualRange={[-20, 20]}
-                      customPosition={0}
-                      offset={0}
-                      endOnTick={false}
-                    />
-                    <Legend visible={false} />
-                  </Chart>
-                </div>
-              </Item>
-            </Form>
-            <div
-              className="dx-card responsive-paddings"
-              style={{ marginTop: "420px" }}
-            >
-              <Form colCount={2}>
-                <Item>
-                  <Form colCount={1}>
-                    <Item
-                      dataField={"distanciaMin"}
-                      editorType={"dxTextBox"}
-                      editorOptions={{
-                        stylingMode: "filled",
-                        placeholder: "Distacia min.",
-                      }}
-                    >
-                      <Label visible={false} text="distanciaMin" />
-                    </Item>
+                  <Grid visible={true} />
+                </ArgumentAxis>
 
-                    <Item>
-                      <Button
-                        className="form-btn"
-                        style={{ "margin-top": "10px" }}
-                        text="Avioes Proximos"
-                        type="default"
-                        stylingMode="contained"
-                      />
-                    </Item>
-                  </Form>
-                </Item>
-                <Item>
-                  <Form colCount={1}>
-                    <Item
-                      dataField={"TempoMin"}
-                      editorType={"dxTextBox"}
-                      editorOptions={{
-                        stylingMode: "filled",
-                        placeholder: "Tempo min.",
-                      }}
-                    >
-                      <Label visible={false} text="TempoMin" />
-                    </Item>
-
-                    <Item>
-                      <Button
-                        className="form-btn"
-                        style={{ "margin-top": "10px" }}
-                        text="Em rota de colisao"
-                        type="default"
-                        stylingMode="contained"
-                      />
-                    </Item>
-                  </Form>
-                </Item>
-              </Form>
-            </div>
-          </Item>
-        </Form>
+                <ValueAxis
+                  defaultVisualRange={[-10, 10]}
+                  tickInterval={1}
+                  customPosition={0}
+                  offset={0}
+                />
+                <Legend visible={false} />
+              </Chart>
+            </Item>
+          </Form>
+        </div>
       </div>
-    </div>
-  </React.Fragment>
-);
+    </React.Fragment>
+  );
+}
