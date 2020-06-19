@@ -10906,6 +10906,11 @@ pnp-webpack-plugin@1.6.4:
   dependencies:
     ts-pnp "^1.1.6"
 
+polar-to-cartesian@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/polar-to-cartesian/-/polar-to-cartesian-0.0.0.tgz#ba68a617d601c61085ff6b8afe10f8a42abbdc04"
+  integrity sha1-umimF9YBxhCF/2uK/hD4pCq73AQ=
+
 portfinder@^1.0.13:
   version "1.0.26"
   resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.26.tgz#475658d56ca30bed72ac7f1378ed350bd1b64e70"

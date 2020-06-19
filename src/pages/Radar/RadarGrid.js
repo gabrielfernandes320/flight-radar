@@ -34,6 +34,7 @@ import {
   TotalItem,
 } from "devextreme-react/data-grid";
 import { useAuth } from "../../contexts/auth";
+import pc2 from "polar-to-cartesian/src/index";
 
 export default function () {
   const formData = useRef({});
@@ -50,7 +51,7 @@ export default function () {
     let distance = Math.sqrt(x * x + y * y);
     let radians = Math.atan2(y, x); //This takes y first
     let degrees = radians * (180 / Math.PI);
-    let polarCoor = { distance: distance, degrees: degrees };
+    let polarCoor = { distance: distance, degrees: degrees, radians: radians };
     return polarCoor;
   }
 
@@ -90,6 +91,12 @@ export default function () {
               setData((data) => [...data]);
             }}
             onRowInserted={(e) => {
+              console.log(
+                pc2(
+                  cartesian2Polar(e.data.x, e.data.y).distance,
+                  cartesian2Polar(e.data.x, e.data.y).radians
+                )
+              );
               data.find(
                 (x) => x.__KEY__ === e.data.__KEY__
               ).ray = cartesian2Polar(e.data.x, e.data.y).distance;
