@@ -7,7 +7,7 @@ import Form, {
   ButtonOptions,
 } from "devextreme-react/form";
 import airplane from "./Emojione_2708.svg";
-import Popup from "devextreme/ui/popup";
+import { Popup } from "devextreme-react/popup";
 import { TextBox, TextArea } from "devextreme-react";
 import {
   Chart,
@@ -17,140 +17,45 @@ import {
   ArgumentAxis,
   ValueAxis,
   Legend,
-  Export,
   Grid,
+  Export,
   Border,
   Tooltip,
   CommonPaneSettings,
 } from "devextreme-react/chart";
 import { Button } from "devextreme-react";
-import DataEntry from "./DataEntry";
+import {
+  DataGrid,
+  Column,
+  Editing,
+  Scrolling,
+  Lookup,
+  Summary,
+  TotalItem,
+} from "devextreme-react/data-grid";
+import { useAuth } from "../../contexts/auth";
+import RadarGrid from "./RadarGrid";
+import RastreabilityFuncs from "./RastreabilityFuncs";
 
 export default function () {
   const formData = useRef({});
-  const data = [
-    {
-      x: 2,
-      y: 5,
-    },
-    {
-      x: 6,
-      y: 8,
-    },
-    {
-      x: -5,
-      y: 6,
-    },
-  ];
 
-  const [x, setX] = useState(null);
-  const [y, setY] = useState(null);
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    data.push({ x: x, y: y });
-  };
-
-  const XEditorOptions = {
-    stylingMode: "filled",
-    placeholder: "X",
-  };
-
-  const YEditorOptions = {
-    stylingMode: "filled",
-    placeholder: "Y",
-  };
-
-  const RaioEditorOptions = {
-    stylingMode: "filled",
-    placeholder: "Raio",
-  };
-  const AnguloEditorOptions = {
-    stylingMode: "filled",
-    placeholder: "Angulo",
-  };
-  const VelocidadeEditorOptions = {
-    stylingMode: "filled",
-    placeholder: "Velocidade",
-  };
-  const DirecaoEditorOptions = {
-    stylingMode: "filled",
-    placeholder: "Direcao",
-  };
-  const funcRastrEditorOptions = {
-    stylingMode: "filled",
-    placeholder: "Distancia Minima",
-  };
-
-  const valueChanged = (data) => {
-    console.log(data);
-  };
+  const { user, data, setData } = useAuth();
 
   return (
     <React.Fragment>
       <div className={"content-block"}>
         <div className={"dx-card responsive-paddings"}>
-          <Form colCount={1}>
+          <Form colCount={2}>
             <Item>
-              <h2 className={"content-block"}>Entrada de dados</h2>
-              <form className={"login-form"} onSubmit={onSubmit}>
-                <Form formData={formData.current} colCount={2}>
-                  <Item>
-                    <TextBox
-                      defaultValue="Smith"
-                      showClearButton={true}
-                      placeholder="Enter full name"
-                      valueChangeEvent="keyup"
-                      onValueChanged={valueChanged}
-                    />
-                  </Item>
-                  <Item
-                    dataField={"y"}
-                    editorType={"dxTextBox"}
-                    editorOptions={YEditorOptions}
-                  >
-                    <Label visible={false} text="X" />
-                  </Item>
-                  <Item
-                    dataField={"angulo"}
-                    editorType={"dxTextBox"}
-                    editorOptions={AnguloEditorOptions}
-                  >
-                    <Label visible={false} text="X" />
-                  </Item>
-                  <Item
-                    dataField={"raio"}
-                    editorType={"dxTextBox"}
-                    editorOptions={RaioEditorOptions}
-                  >
-                    <Label visible={false} text="X" />
-                  </Item>
-                  <Item
-                    dataField={"direcao"}
-                    editorType={"dxTextBox"}
-                    editorOptions={DirecaoEditorOptions}
-                  >
-                    <Label visible={false} text="X" />
-                  </Item>
-                  <Item
-                    dataField={"velocidade"}
-                    editorType={"dxTextBox"}
-                    editorOptions={VelocidadeEditorOptions}
-                  >
-                    <Label visible={false} text="X" />
-                  </Item>
-                  <ButtonItem>
-                    <ButtonOptions
-                      width={"100%"}
-                      type={"default"}
-                      useSubmitBehavior={true}
-                    >
-                      <span className="dx-button-text">Inserir</span>
-                    </ButtonOptions>
-                  </ButtonItem>
-                </Form>
-              </form>
+              <RadarGrid />
             </Item>
+            <Item>
+              <RastreabilityFuncs />
+            </Item>
+          </Form>
+
+          <Form colCount={1}>
             <Item>
               <h2 className={"content-block"}>Radar</h2>
               <Chart

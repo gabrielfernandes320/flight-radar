@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import "./Radar.scss";
 import Form, { Item, Label } from "devextreme-react/form";
 import airplane from "../aeroplane.svg";
@@ -11,7 +11,8 @@ import {
   ValueAxis,
   Legend,
 } from "devextreme-react/chart";
-import { Button } from "devextreme-react";
+import { Button, Popup } from "devextreme-react";
+import { useAuth } from "../../contexts/auth";
 
 const XEditorOptions = {
   stylingMode: "filled",
@@ -44,67 +45,96 @@ const funcRastrEditorOptions = {
   placeholder: "Distancia Minima",
 };
 
-export default () => (
-  <React.Fragment>
-    <div className="dx-card responsive-paddings">
-      <h2 className={"content-block"}>Funcoes de Rastreamento</h2>
-      <Form colCount={1}>
-        <Item
-          dataField={"funcoesRastreamento"}
-          editorType={"dxTextBox"}
-          editorOptions={funcRastrEditorOptions}
-        >
-          <Label visible={false} text="X" />
-        </Item>
-        <Item>
-          <Button
-            className="form-btn"
-            style={{ "margin-top": "10px" }}
-            text="Avioes proximos ao aeroporto"
-            type="default"
-            stylingMode="contained"
-          />
-        </Item>
-        <Item
-          dataField={"distanciaMin"}
-          editorType={"dxTextBox"}
-          editorOptions={{
-            stylingMode: "filled",
-            placeholder: "Distacia min.",
-          }}
-        >
-          <Label visible={false} text="distanciaMin" />
-        </Item>
-        <Item>
-          <Button
-            className="form-btn"
-            style={{ "margin-top": "10px" }}
-            text="Avioes Proximos"
-            type="default"
-            stylingMode="contained"
-          />
-        </Item>
-        <Item
-          dataField={"TempoMin"}
-          editorType={"dxTextBox"}
-          editorOptions={{
-            stylingMode: "filled",
-            placeholder: "Tempo min.",
-          }}
-        >
-          <Label visible={false} text="TempoMin" />
-        </Item>
+export default () => {
+  const [visible, setVisible] = useState();
+  function changePopupVisibility() {
+    visible === true ? setVisible(false) : setVisible(true);
+  }
 
-        <Item>
-          <Button
-            className="form-btn"
-            style={{ "margin-top": "10px" }}
-            text="Em rota de colisao"
-            type="default"
-            stylingMode="contained"
-          />
-        </Item>
-      </Form>
-    </div>
-  </React.Fragment>
-);
+  const { user, data, setData } = useAuth();
+
+  return (
+    <React.Fragment>
+      <Button
+        className="btn"
+        text="Funcoes de rastreabilidade"
+        type="default"
+        useSubmitBehavior={true}
+        stylingMode="contained"
+        onClick={changePopupVisibility}
+      />
+      <Popup
+        className="pop-up"
+        visible={visible}
+        onHiding={changePopupVisibility}
+        dragEnabled={true}
+        resizeEnabled={true}
+        closeOnOutsideClick={true}
+        showTitle={true}
+        title="Filtros"
+        width={"fit-content"}
+      >
+        <div className="dx-card responsive-paddings">
+          <h2 className={"content-block"}>Funcoes de Rastreamento</h2>
+          <Form colCount={1}>
+            <Item
+              dataField={"funcoesRastreamento"}
+              editorType={"dxTextBox"}
+              editorOptions={funcRastrEditorOptions}
+            >
+              <Label visible={false} text="X" />
+            </Item>
+            <Item>
+              <Button
+                className="form-btn"
+                style={{ "margin-top": "10px" }}
+                text="Avioes proximos ao aeroporto"
+                type="default"
+                stylingMode="contained"
+              />
+            </Item>
+            <Item
+              dataField={"distanciaMin"}
+              editorType={"dxTextBox"}
+              editorOptions={{
+                stylingMode: "filled",
+                placeholder: "Distacia min.",
+              }}
+            >
+              <Label visible={false} text="distanciaMin" />
+            </Item>
+            <Item>
+              <Button
+                className="form-btn"
+                style={{ "margin-top": "10px" }}
+                text="Avioes Proximos"
+                type="default"
+                stylingMode="contained"
+              />
+            </Item>
+            <Item
+              dataField={"TempoMin"}
+              editorType={"dxTextBox"}
+              editorOptions={{
+                stylingMode: "filled",
+                placeholder: "Tempo min.",
+              }}
+            >
+              <Label visible={false} text="TempoMin" />
+            </Item>
+
+            <Item>
+              <Button
+                className="form-btn"
+                style={{ "margin-top": "10px" }}
+                text="Em rota de colisao"
+                type="default"
+                stylingMode="contained"
+              />
+            </Item>
+          </Form>
+        </div>
+      </Popup>
+    </React.Fragment>
+  );
+};
