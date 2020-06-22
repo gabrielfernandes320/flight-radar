@@ -34,11 +34,9 @@ import {
   TotalItem,
 } from "devextreme-react/data-grid";
 import { useAuth } from "../../contexts/auth";
-import pc2 from "polar-to-cartesian/src/index";
+//import pc2 from "polar-to-cartesian/src/index";
 
 export default function () {
-  const formData = useRef({});
-
   const [visible, setVisible] = useState();
 
   function changePopupVisibility() {
@@ -54,6 +52,32 @@ export default function () {
     let polarCoor = { distance: distance, degrees: degrees, radians: radians };
     return polarCoor;
   }
+
+  function degrees_to_radians(degrees) {
+    var pi = Math.PI;
+    return degrees * (pi / 180);
+  }
+
+  const p2c = (r, theta) => {
+    return {
+      x: r * Math.cos(theta),
+      y: r * Math.sin(theta),
+    };
+  };
+
+  const insertRayAndDegrees = (e) => {
+    const cords = cartesian2Polar(e.data.x, e.data.y);
+
+    data.find((x) => x.__KEY__ === e.data.__KEY__).ray = cords.distance;
+    data.find((x) => x.__KEY__ === e.data.__KEY__).degrees = cords.degrees;
+  };
+
+  const insertXandY = (e) => {
+    const xy = p2c(e.data.ray, degrees_to_radians(e.data.degrees));
+
+    data.find((x) => x.__KEY__ === e.data.__KEY__).x = xy.x;
+    data.find((x) => x.__KEY__ === e.data.__KEY__).y = xy.y;
+  };
 
   return (
     <React.Fragment>
@@ -91,24 +115,18 @@ export default function () {
               setData((data) => [...data]);
             }}
             onRowInserted={(e) => {
-              console.log(
-                pc2(
-                  cartesian2Polar(e.data.x, e.data.y).distance,
-                  cartesian2Polar(e.data.x, e.data.y).radians
-                )
-              );
-              data.find(
-                (x) => x.__KEY__ === e.data.__KEY__
-              ).ray = cartesian2Polar(e.data.x, e.data.y).distance;
+              console.log();
+              console.log(e.data);
+              if (isNaN(e.data.x) && isNaN(e.data.y)) insertXandY(e);
 
-              data.find(
-                (x) => x.__KEY__ === e.data.__KEY__
-              ).degrees = cartesian2Polar(e.data.x, e.data.y).degrees;
+              if (isNaN(e.data.ray) && isNaN(e.data.degrees))
+                insertRayAndDegrees(e);
 
               setData((data) => [...data]);
             }}
           >
             <Editing
+              confirmDelete={false}
               refreshMode={"full"}
               mode="cell"
               allowAdding={true}
@@ -118,12 +136,44 @@ export default function () {
 
             <Scrolling mode="virtual" />
 
-            <Column dataField="x" width="auto" caption="X"></Column>
+            <Column
+              dataField="x"
+              dataType="number"
+              width="auto"
+              caption="X"
+            ></Column>
 
-            <Column dataField="y" width="auto" caption="Y"></Column>
+            <Column
+              dataField="y"
+              width="auto"
+              dataType="number"
+              caption="Y"
+            ></Column>
 
-            <Column dataField="ray" width="auto" caption="Raio"></Column>
-            <Column dataField="degrees" width="auto" caption="Angulo"></Column>
+            <Column
+              dataField="ray"
+              width="auto"
+              dataType="number"
+              caption="Raio"
+            ></Column>
+            <Column
+              dataField="degrees"
+              width="100px"
+              dataType="number"
+              caption="Angulo"
+            ></Column>
+            <Column
+              dataField="speed"
+              width="100px"
+              dataType="number"
+              caption="Velocidade(km/m)"
+            ></Column>
+            <Column
+              dataField="direction"
+              width="100px"
+              dataType="number"
+              caption="DIrecao"
+            ></Column>
           </DataGrid>
         </Popup>
       </div>
