@@ -9,7 +9,6 @@
     "devextreme": "20.1-stable",
     "devextreme-react": "20.1-stable",
     "node-sass": "^4.11.0",
-    "polar-to-cartesian": "^0.0.0",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.0",
     "react-dom": "^16.13.1",

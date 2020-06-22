@@ -62,10 +62,20 @@ export default function () {
                 size={{ width: "auto", height: "600" }}
                 className="chart"
                 dataSource={data}
+                customizePoint={() => {
+                  return {
+                    image: {
+                      url: airplane,
+                      width: 20,
+                      height: 20,
+                    },
+                    visible: true,
+                  };
+                }}
               >
                 <CommonSeriesSettings type="scatter" />
                 <Series argumentField="x" valueField="y">
-                  <Point image={airplane} />
+                  <Point visible={true} />
                 </Series>
                 <ArgumentAxis
                   defaultVisualRange={[-30, 30]}
@@ -82,6 +92,7 @@ export default function () {
                   customPosition={0}
                   offset={0}
                 />
+                <Export enabled={true} />
                 <Legend visible={false} />
               </Chart>
             </Item>
