@@ -36,6 +36,7 @@ import {
 import { useAuth } from "../../contexts/auth";
 import RadarGrid from "./RadarGrid";
 import RastreabilityFuncs from "./RastreabilityFuncs";
+import TransformFuncs from "./TransformFuncs";
 
 export default function () {
   const formData = useRef({});
@@ -52,6 +53,9 @@ export default function () {
             </Item>
             <Item>
               <RastreabilityFuncs />
+            </Item>
+            <Item>
+              <TransformFuncs />
             </Item>
           </Form>
 

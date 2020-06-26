@@ -32,6 +32,14 @@ import {
   Lookup,
   Summary,
   TotalItem,
+  Pager,
+  Paging,
+  FilterRow,
+  Selection,
+  ColumnChooser,
+  Grouping,
+  GroupPanel,
+  ColumnFixing,
 } from "devextreme-react/data-grid";
 import { useAuth } from "../../contexts/auth";
 //import pc2 from "polar-to-cartesian/src/index";
@@ -65,18 +73,22 @@ export default function () {
     };
   };
 
-  const insertRayAndDegrees = (e) => {
-    const cords = cartesian2Polar(e.data.x, e.data.y);
+  const insertRayAndDegrees = (rowData) => {
+    const cords = cartesian2Polar(rowData.x, rowData.y);
 
-    data.find((x) => x.__KEY__ === e.data.__KEY__).ray = cords.distance;
-    data.find((x) => x.__KEY__ === e.data.__KEY__).degrees = cords.degrees;
+    data.find((x) => x.__KEY__ === rowData.__KEY__).ray = Math.round(
+      cords.distance
+    );
+    data.find((x) => x.__KEY__ === rowData.__KEY__).degrees = Math.round(
+      cords.degrees
+    );
   };
 
-  const insertXandY = (e) => {
-    const xy = p2c(e.data.ray, degrees_to_radians(e.data.degrees));
+  const insertXandY = (rowData) => {
+    const xy = p2c(rowData.ray, degrees_to_radians(rowData.degrees));
 
-    data.find((x) => x.__KEY__ === e.data.__KEY__).x = xy.x;
-    data.find((x) => x.__KEY__ === e.data.__KEY__).y = xy.y;
+    data.find((x) => x.__KEY__ === rowData.__KEY__).x = Math.round(xy.x);
+    data.find((x) => x.__KEY__ === rowData.__KEY__).y = Math.round(xy.y);
   };
 
   return (
@@ -98,33 +110,57 @@ export default function () {
           resizeEnabled={true}
           closeOnOutsideClick={true}
           showTitle={true}
-          title="Filtros"
+          title="Grid"
           width={"fit-content"}
         >
           <DataGrid
             id="grid"
             height={"fit-content"}
             width={"600"}
+            allowColumnReordering={true}
+            allowColumnResizing={true}
             showBorders={true}
             dataSource={data}
             repaintChangesOnly={true}
+            columnAutoWidth={true}
+            rowAlternationEnabled={true}
             onRowRemoved={(e) => {
               setData(data.filter((x) => x.key !== e.key));
             }}
             onRowUpdated={(e) => {
               setData((data) => [...data]);
             }}
+            onRowUpdating={(e) => {
+              if (!isNaN(e.newData.x)) {
+                e.oldData.x = e.newData.x;
+                insertRayAndDegrees(e.oldData);
+              }
+              if (!isNaN(e.newData.y)) {
+                e.oldData.y = e.newData.y;
+                insertRayAndDegrees(e.oldData);
+              }
+              if (!isNaN(e.newData.ray)) {
+                e.oldData.ray = e.newData.ray;
+                insertXandY(e.oldData);
+              }
+              if (!isNaN(e.newData.degrees)) {
+                e.oldData.degrees = e.newData.degrees;
+                insertXandY(e.oldData);
+              }
+            }}
             onRowInserted={(e) => {
-              console.log();
-              console.log(e.data);
-              if (isNaN(e.data.x) && isNaN(e.data.y)) insertXandY(e);
+              if (isNaN(e.data.x) && isNaN(e.data.y)) insertXandY(e.data);
 
               if (isNaN(e.data.ray) && isNaN(e.data.degrees))
-                insertRayAndDegrees(e);
+                insertRayAndDegrees(e.data);
 
               setData((data) => [...data]);
             }}
           >
+            <Selection mode="multiple" />
+            <Paging defaultPageSize={20} />
+            <Pager showPageSizeSelector={true} showInfo={true} />
+            <FilterRow visible={true} />
             <Editing
               confirmDelete={false}
               refreshMode={"full"}
@@ -133,7 +169,11 @@ export default function () {
               allowDeleting={true}
               allowUpdating={true}
             />
-
+            <Export
+              enabled={true}
+              fileName="Grid"
+              allowExportSelectedData={true}
+            />
             <Scrolling mode="virtual" />
 
             <Column

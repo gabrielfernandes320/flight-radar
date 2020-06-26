@@ -71,69 +71,66 @@ export default () => {
         resizeEnabled={true}
         closeOnOutsideClick={true}
         showTitle={true}
-        title="Filtros"
+        title="Funcoes de rastreabilidade"
         width={"fit-content"}
       >
-        <div className="dx-card responsive-paddings">
-          <h2 className={"content-block"}>Funcoes de Rastreamento</h2>
-          <Form colCount={1}>
-            <Item
-              dataField={"funcoesRastreamento"}
-              editorType={"dxTextBox"}
-              editorOptions={funcRastrEditorOptions}
-            >
-              <Label visible={false} text="X" />
-            </Item>
-            <Item>
-              <Button
-                className="form-btn"
-                style={{ "margin-top": "10px" }}
-                text="Avioes proximos ao aeroporto"
-                type="default"
-                stylingMode="contained"
-              />
-            </Item>
-            <Item
-              dataField={"distanciaMin"}
-              editorType={"dxTextBox"}
-              editorOptions={{
-                stylingMode: "filled",
-                placeholder: "Distacia min.",
-              }}
-            >
-              <Label visible={false} text="distanciaMin" />
-            </Item>
-            <Item>
-              <Button
-                className="form-btn"
-                style={{ "margin-top": "10px" }}
-                text="Avioes Proximos"
-                type="default"
-                stylingMode="contained"
-              />
-            </Item>
-            <Item
-              dataField={"TempoMin"}
-              editorType={"dxTextBox"}
-              editorOptions={{
-                stylingMode: "filled",
-                placeholder: "Tempo min.",
-              }}
-            >
-              <Label visible={false} text="TempoMin" />
-            </Item>
+        <Form colCount={1}>
+          <Item
+            dataField={"funcoesRastreamento"}
+            editorType={"dxTextBox"}
+            editorOptions={funcRastrEditorOptions}
+          >
+            <Label visible={false} text="X" />
+          </Item>
+          <Item>
+            <Button
+              className="form-btn"
+              style={{ "margin-top": "10px" }}
+              text="Avioes proximos ao aeroporto"
+              type="default"
+              stylingMode="contained"
+            />
+          </Item>
+          <Item
+            dataField={"distanciaMin"}
+            editorType={"dxTextBox"}
+            editorOptions={{
+              stylingMode: "filled",
+              placeholder: "Distacia min.",
+            }}
+          >
+            <Label visible={false} text="distanciaMin" />
+          </Item>
+          <Item>
+            <Button
+              className="form-btn"
+              style={{ "margin-top": "10px" }}
+              text="Avioes Proximos"
+              type="default"
+              stylingMode="contained"
+            />
+          </Item>
+          <Item
+            dataField={"TempoMin"}
+            editorType={"dxTextBox"}
+            editorOptions={{
+              stylingMode: "filled",
+              placeholder: "Tempo min.",
+            }}
+          >
+            <Label visible={false} text="TempoMin" />
+          </Item>
 
-            <Item>
-              <Button
-                className="form-btn"
-                style={{ "margin-top": "10px" }}
-                text="Em rota de colisao"
-                type="default"
-                stylingMode="contained"
-              />
-            </Item>
-          </Form>
-        </div>
+          <Item>
+            <Button
+              className="form-btn"
+              style={{ "margin-top": "10px" }}
+              text="Em rota de colisao"
+              type="default"
+              stylingMode="contained"
+            />
+          </Item>
+        </Form>
       </Popup>
     </React.Fragment>
   );
