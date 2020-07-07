@@ -51,13 +51,13 @@ export default () => {
     visible === true ? setVisible(false) : setVisible(true);
   }
 
-  const { user, data, setData } = useAuth();
+  const { user, data, setData, dataGrid } = useAuth();
 
   return (
     <React.Fragment>
       <Button
         className="btn"
-        text="Funcoes de rastreabilidade"
+        text="Funcoes de Rastreabilidade"
         type="default"
         useSubmitBehavior={true}
         stylingMode="contained"
@@ -71,7 +71,7 @@ export default () => {
         resizeEnabled={true}
         closeOnOutsideClick={true}
         showTitle={true}
-        title="Funcoes de rastreabilidade"
+        title="Funcoes de Rastreabilidade"
         width={"fit-content"}
       >
         <Form colCount={1}>
@@ -88,6 +88,11 @@ export default () => {
               style={{ "margin-top": "10px" }}
               text="Avioes proximos ao aeroporto"
               type="default"
+              onClick={() => {
+                dataGrid.getSelectedRowsData().then((rowData) => {
+                  console.log(rowData);
+                });
+              }}
               stylingMode="contained"
             />
           </Item>
@@ -107,6 +112,11 @@ export default () => {
               style={{ "margin-top": "10px" }}
               text="Avioes Proximos"
               type="default"
+              onClick={() => {
+                dataGrid.getSelectedRowsData().then((rowData) => {
+                  console.log(rowData);
+                });
+              }}
               stylingMode="contained"
             />
           </Item>
@@ -127,6 +137,11 @@ export default () => {
               style={{ "margin-top": "10px" }}
               text="Em rota de colisao"
               type="default"
+              onClick={() => {
+                dataGrid.getSelectedRowsData().then((rowData) => {
+                  console.log(rowData);
+                });
+              }}
               stylingMode="contained"
             />
           </Item>

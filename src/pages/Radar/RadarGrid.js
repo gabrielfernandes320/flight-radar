@@ -34,8 +34,8 @@ import {
   TotalItem,
   Pager,
   Paging,
-  FilterRow,
   Selection,
+  FilterRow,
   ColumnChooser,
   Grouping,
   GroupPanel,
@@ -51,7 +51,7 @@ export default function () {
     visible === true ? setVisible(false) : setVisible(true);
   }
 
-  const { user, data, setData } = useAuth();
+  const { user, data, setData, setDataGrid } = useAuth();
 
   function cartesian2Polar(x, y) {
     let distance = Math.sqrt(x * x + y * y);
@@ -76,32 +76,37 @@ export default function () {
   const insertRayAndDegrees = (rowData) => {
     const cords = cartesian2Polar(rowData.x, rowData.y);
 
-    data.find((x) => x.__KEY__ === rowData.__KEY__).ray = Math.round(
-      cords.distance
-    );
-    data.find((x) => x.__KEY__ === rowData.__KEY__).degrees = Math.round(
-      cords.degrees
-    );
+    data.find(
+      (x) => x.__KEY__ === rowData.__KEY__
+    ).ray = cords.distance.toFixed(2);
+
+    data.find(
+      (x) => x.__KEY__ === rowData.__KEY__
+    ).degrees = cords.degrees.toFixed(2);
   };
 
   const insertXandY = (rowData) => {
     const xy = p2c(rowData.ray, degrees_to_radians(rowData.degrees));
 
-    data.find((x) => x.__KEY__ === rowData.__KEY__).x = Math.round(xy.x);
-    data.find((x) => x.__KEY__ === rowData.__KEY__).y = Math.round(xy.y);
+    data.find((x) => x.__KEY__ === rowData.__KEY__).x = xy.x.toFixed(2);
+    data.find((x) => x.__KEY__ === rowData.__KEY__).y = xy.y.toFixed(2);
   };
 
+  const onInitialized = (e) => {
+    setDataGrid(e.component);
+  };
+
+  let index = 0;
   return (
     <React.Fragment>
+      <Button
+        text="Grid"
+        type="default"
+        useSubmitBehavior={true}
+        stylingMode="contained"
+        onClick={changePopupVisibility}
+      />
       <div className={"content-block"}>
-        <Button
-          className="btn"
-          text="Grid"
-          type="default"
-          useSubmitBehavior={true}
-          stylingMode="contained"
-          onClick={changePopupVisibility}
-        />
         <Popup
           className="pop-up"
           visible={visible}
@@ -120,9 +125,11 @@ export default function () {
             allowColumnReordering={true}
             allowColumnResizing={true}
             showBorders={true}
+            selectedRowKeys
             dataSource={data}
             repaintChangesOnly={true}
             columnAutoWidth={true}
+            onInitialized={onInitialized}
             rowAlternationEnabled={true}
             onRowRemoved={(e) => {
               setData(data.filter((x) => x.key !== e.key));
@@ -157,7 +164,7 @@ export default function () {
               setData((data) => [...data]);
             }}
           >
-            <Selection mode="multiple" />
+            <Selection deferred={true} mode="multiple" />
             <Paging defaultPageSize={20} />
             <Pager showPageSizeSelector={true} showInfo={true} />
             <FilterRow visible={true} />

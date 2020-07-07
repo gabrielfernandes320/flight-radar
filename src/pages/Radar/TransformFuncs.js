@@ -12,6 +12,7 @@ import {
   Legend,
 } from "devextreme-react/chart";
 import { Button, Popup } from "devextreme-react";
+import { useAuth } from "../../contexts/auth";
 
 const XEditorOptions = {
   stylingMode: "filled",
@@ -41,6 +42,8 @@ const DirecaoEditorOptions = {
 };
 
 export default () => {
+  const { user, data, setData, dataGrid } = useAuth();
+
   const [visible, setVisible] = useState();
   function changePopupVisibility() {
     visible === true ? setVisible(false) : setVisible(true);
@@ -49,7 +52,7 @@ export default () => {
     <React.Fragment>
       <Button
         className="btn"
-        text="Funcoes de transformacao"
+        text="Funcoes de Transformacao"
         type="default"
         useSubmitBehavior={true}
         stylingMode="contained"
@@ -63,7 +66,7 @@ export default () => {
         resizeEnabled={true}
         closeOnOutsideClick={true}
         showTitle={true}
-        title="Funcoes de rastreabilidade"
+        title="Funcoes de Transformacao"
         width={"fit-content"}
       >
         <div id="second-line">
@@ -90,6 +93,11 @@ export default () => {
                     <Button
                       className="form-btn"
                       style={{ "margin-top": "10px" }}
+                      onClick={() => {
+                        dataGrid.getSelectedRowsData().then((rowData) => {
+                          console.log(rowData);
+                        });
+                      }}
                       text="Translandar"
                       type="default"
                       stylingMode="contained"
@@ -120,6 +128,11 @@ export default () => {
                     <Button
                       className="form-btn"
                       style={{ "margin-top": "10px" }}
+                      onClick={() => {
+                        dataGrid.getSelectedRowsData().then((rowData) => {
+                          console.log(rowData);
+                        });
+                      }}
                       text="Escalonar"
                       type="default"
                       stylingMode="contained"
@@ -146,6 +159,11 @@ export default () => {
                     <Button
                       className="form-btn"
                       style={{ "margin-top": "10px" }}
+                      onClick={() => {
+                        dataGrid.getSelectedRowsData().then((rowData) => {
+                          console.log(rowData);
+                        });
+                      }}
                       text="Rotacionar"
                       type="default"
                       stylingMode="contained"

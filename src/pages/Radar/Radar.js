@@ -22,6 +22,9 @@ import {
   Border,
   Tooltip,
   CommonPaneSettings,
+  CommonAnnotationSettings,
+  Annotation,
+  Image,
 } from "devextreme-react/chart";
 import { Button } from "devextreme-react";
 import {
@@ -37,25 +40,39 @@ import { useAuth } from "../../contexts/auth";
 import RadarGrid from "./RadarGrid";
 import RastreabilityFuncs from "./RastreabilityFuncs";
 import TransformFuncs from "./TransformFuncs";
+import { Font } from "devextreme-react/bar-gauge";
 
 export default function () {
-  const formData = useRef({});
+  const customizeTooltip = (annotation) => {
+    return {
+      html: `<div class='tooltip'>${"Teste"}</div>`,
+    };
+  };
+  const chartRef = useRef({});
 
-  const { user, data, setData } = useAuth();
+  const { user, data, setData, dataGrid } = useAuth();
 
   return (
     <React.Fragment>
       <div className={"content-block"}>
         <div className={"dx-card responsive-paddings"}>
-          <Form colCount={2}>
-            <Item>
+          <Form className="grid" height={50} width={15} colCount={3}>
+            <Item className="grid">
               <RadarGrid />
             </Item>
-            <Item>
+            <Item className="grid">
               <RastreabilityFuncs />
             </Item>
-            <Item>
+            <Item className="grid">
               <TransformFuncs />
+            </Item>
+            <Item>
+              <Button
+                text="Clicar"
+                onClick={() => {
+                  console.log(chartRef.current);
+                }}
+              ></Button>
             </Item>
           </Form>
 
@@ -63,9 +80,13 @@ export default function () {
             <Item>
               <h2 className={"content-block"}>Radar</h2>
               <Chart
+                ref={chartRef}
                 size={{ width: "auto", height: "600" }}
                 className="chart"
                 dataSource={data}
+                onPointClick={(e) => {
+                  console.log(e);
+                }}
                 customizePoint={() => {
                   return {
                     image: {
@@ -77,6 +98,7 @@ export default function () {
                   };
                 }}
               >
+                <Tooltip visible={true} hint={"Test"} />
                 <CommonSeriesSettings type="scatter" />
                 <Series argumentField="x" valueField="y">
                   <Point visible={true} />
@@ -96,6 +118,7 @@ export default function () {
                   customPosition={0}
                   offset={0}
                 />
+
                 <Export enabled={true} />
                 <Legend visible={false} />
               </Chart>
