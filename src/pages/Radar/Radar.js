@@ -56,7 +56,7 @@ export default function () {
     <React.Fragment>
       <div className={"content-block"}>
         <div className={"dx-card responsive-paddings"}>
-          <Form className="grid" height={50} width={15} colCount={3}>
+          <Form className="grid" height={50} colCount={4}>
             <Item className="grid">
               <RadarGrid />
             </Item>

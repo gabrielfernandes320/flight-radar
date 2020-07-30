@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./Radar.scss";
 import Form, { Item, Label } from "devextreme-react/form";
 import airplane from "../aeroplane.svg";
@@ -44,10 +44,14 @@ const DirecaoEditorOptions = {
 export default () => {
   const { user, data, setData, dataGrid } = useAuth();
 
+  const transladarFormData = useRef({});
+  const escalonarFormData = useRef({});
+
   const [visible, setVisible] = useState();
   function changePopupVisibility() {
     visible === true ? setVisible(false) : setVisible(true);
   }
+
   return (
     <React.Fragment>
       <Button
@@ -74,7 +78,7 @@ export default () => {
             <Item>
               <div id="translandar">
                 <h6 className={"content-block"}>Transladar</h6>
-                <Form colCount={2}>
+                <Form formData={transladarFormData.current} colCount={2}>
                   <Item
                     dataField={"x"}
                     editorType={"dxTextBox"}
@@ -95,7 +99,14 @@ export default () => {
                       style={{ "margin-top": "10px" }}
                       onClick={() => {
                         dataGrid.getSelectedRowsData().then((rowData) => {
-                          console.log(rowData);
+                          for (let element of rowData) {
+                            element.x += parseInt(transladarFormData.current.x);
+                            element.y += parseInt(transladarFormData.current.y);
+                          }
+                          setData((data) => [...data]);
+                          changePopupVisibility();
+
+                          transladarFormData.current = {};
                         });
                       }}
                       text="Translandar"
@@ -109,7 +120,7 @@ export default () => {
             <Item>
               <div id="escalonar">
                 <h6 className={"content-block"}>Escalonar</h6>
-                <Form colCount={2}>
+                <Form formData={escalonarFormData.current} colCount={2}>
                   <Item
                     dataField={"x"}
                     editorType={"dxTextBox"}
@@ -130,7 +141,13 @@ export default () => {
                       style={{ "margin-top": "10px" }}
                       onClick={() => {
                         dataGrid.getSelectedRowsData().then((rowData) => {
-                          console.log(rowData);
+                          for (let element of rowData) {
+                            element.x *= parseInt(escalonarFormData.current.x);
+                            element.y *= parseInt(escalonarFormData.current.y);
+                          }
+                          setData((data) => [...data]);
+                          changePopupVisibility();
+                          escalonarFormData.current = {};
                         });
                       }}
                       text="Escalonar"
