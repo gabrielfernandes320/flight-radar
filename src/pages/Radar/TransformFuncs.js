@@ -160,7 +160,7 @@ export default () => {
             </Item>
             <Item>
               <div id="Angulo">
-                <Form colCount={1}>
+                <Form formData={escalonarFormData.current} colCount={1}>
                   <Item
                     dataField={"Angulo"}
                     editorType={"dxTextBox"}
@@ -171,6 +171,26 @@ export default () => {
                   >
                     <Label visible={false} text="Angulo" />
                   </Item>
+                  <Item
+                    dataField={"x"}
+                    editorType={"dxTextBox"}
+                    editorOptions={{
+                      stylingMode: "filled",
+                      placeholder: "X",
+                    }}
+                  >
+                    <Label visible={false} text="X" />
+                  </Item>
+                  <Item
+                    dataField={"y"}
+                    editorType={"dxTextBox"}
+                    editorOptions={{
+                      stylingMode: "filled",
+                      placeholder: "Y",
+                    }}
+                  >
+                    <Label visible={false} text="X" />
+                  </Item>
 
                   <Item>
                     <Button
@@ -178,7 +198,33 @@ export default () => {
                       style={{ "margin-top": "10px" }}
                       onClick={() => {
                         dataGrid.getSelectedRowsData().then((rowData) => {
-                          console.log(rowData);
+                          console.log(escalonarFormData.current);
+                          let degrees =
+                            (escalonarFormData.current.Angulo * Math.PI) / 180;
+                          let cos = Math.cos(degrees);
+                          let sin = Math.sin(degrees);
+                          console.log(escalonarFormData.current);
+                          for (let element of rowData) {
+                            let x_relative =
+                              element.x - parseInt(escalonarFormData.current.x);
+                            let y_relative =
+                              element.y - parseInt(escalonarFormData.current.y);
+
+                            let x_final = x_relative * cos - y_relative * sin;
+                            let y_final = y_relative * cos + x_relative * sin;
+
+                            element.x = parseFloat(
+                              x_final + escalonarFormData.current.x
+                            );
+                            element.y = parseFloat(
+                              y_final + escalonarFormData.current.y
+                            );
+                          }
+                          setData((data) => [...data]);
+                          changePopupVisibility();
+                          escalonarFormData.current = {};
+
+                          console.log(data);
                         });
                       }}
                       text="Rotacionar"
