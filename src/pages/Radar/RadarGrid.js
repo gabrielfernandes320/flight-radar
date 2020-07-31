@@ -23,7 +23,7 @@ export default function () {
     visible === true ? setVisible(false) : setVisible(true);
   }
 
-  const { user, data, setData, setDataGrid } = useAuth();
+  const { user, data, setData, setDataGrid, dataGrid } = useAuth();
 
   function cartesian2Polar(x, y) {
     let distance = Math.sqrt(x * x + y * y);
@@ -46,6 +46,8 @@ export default function () {
   };
 
   const insertRayAndDegrees = (rowData) => {
+    if (isNaN(rowData.x)) rowData.x = 0;
+    if (isNaN(rowData.y)) rowData.y = 0;
     const cords = cartesian2Polar(rowData.x, rowData.y);
 
     data.find(
@@ -58,6 +60,8 @@ export default function () {
   };
 
   const insertXandY = (rowData) => {
+    if (isNaN(rowData.ray)) rowData.ray = 0;
+    if (isNaN(rowData.degrees)) rowData.degrees = 0;
     const xy = p2c(rowData.ray, degrees_to_radians(rowData.degrees));
 
     data.find((x) => x.__KEY__ === rowData.__KEY__).x = xy.x.toFixed(2);
