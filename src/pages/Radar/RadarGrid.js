@@ -1,48 +1,20 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import "./Radar.scss";
-import Form, {
-  Item,
-  Label,
-  ButtonItem,
-  ButtonOptions,
-} from "devextreme-react/form";
-import airplane from "./Emojione_2708.svg";
 import { Popup } from "devextreme-react/popup";
-import { TextBox, TextArea } from "devextreme-react";
-import {
-  Chart,
-  CommonSeriesSettings,
-  Series,
-  Point,
-  ArgumentAxis,
-  ValueAxis,
-  Legend,
-  Export,
-  Grid,
-  Border,
-  Tooltip,
-  CommonPaneSettings,
-} from "devextreme-react/chart";
+
+import { Export } from "devextreme-react/chart";
 import { Button } from "devextreme-react";
 import {
   DataGrid,
   Column,
   Editing,
   Scrolling,
-  Lookup,
-  Summary,
-  TotalItem,
   Pager,
   Paging,
   Selection,
   FilterRow,
-  ColumnChooser,
-  Grouping,
-  GroupPanel,
-  ColumnFixing,
 } from "devextreme-react/data-grid";
 import { useAuth } from "../../contexts/auth";
-//import pc2 from "polar-to-cartesian/src/index";
 
 export default function () {
   const [visible, setVisible] = useState();

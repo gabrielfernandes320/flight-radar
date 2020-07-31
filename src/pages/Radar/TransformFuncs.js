@@ -46,6 +46,7 @@ export default () => {
 
   const transladarFormData = useRef({});
   const escalonarFormData = useRef({});
+  const rotacionarFormData = useRef({});
 
   const [visible, setVisible] = useState();
   function changePopupVisibility() {
@@ -160,7 +161,8 @@ export default () => {
             </Item>
             <Item>
               <div id="Angulo">
-                <Form formData={escalonarFormData.current} colCount={1}>
+                <h6 className={"content-block"}>Rotacionar</h6>
+                <Form formData={rotacionarFormData.current} colCount={1}>
                   <Item
                     dataField={"Angulo"}
                     editorType={"dxTextBox"}
@@ -198,31 +200,49 @@ export default () => {
                       style={{ "margin-top": "10px" }}
                       onClick={() => {
                         dataGrid.getSelectedRowsData().then((rowData) => {
-                          console.log(escalonarFormData.current);
+                          console.log(rotacionarFormData.current);
                           let degrees =
-                            (escalonarFormData.current.Angulo * Math.PI) / 180;
+                            (rotacionarFormData.current.Angulo * Math.PI) / 180;
+
                           let cos = Math.cos(degrees);
                           let sin = Math.sin(degrees);
-                          console.log(escalonarFormData.current);
+                          console.log(rotacionarFormData.current);
                           for (let element of rowData) {
                             let x_relative =
-                              element.x - parseInt(escalonarFormData.current.x);
+                              element.x -
+                              parseInt(rotacionarFormData.current.x);
                             let y_relative =
-                              element.y - parseInt(escalonarFormData.current.y);
+                              element.y -
+                              parseInt(rotacionarFormData.current.y);
 
                             let x_final = x_relative * cos - y_relative * sin;
                             let y_final = y_relative * cos + x_relative * sin;
 
-                            element.x = parseFloat(
-                              x_final + escalonarFormData.current.x
+                            console.log(
+                              element.x,
+                              x_final,
+                              rotacionarFormData.current.x
                             );
-                            element.y = parseFloat(
-                              y_final + escalonarFormData.current.y
+                            console.log(
+                              element.y,
+                              y_final,
+                              rotacionarFormData.current.y
                             );
+
+                            element.x =
+                              Math.round(parseFloat(x_final)) +
+                              Math.round(
+                                parseFloat(rotacionarFormData.current.x)
+                              );
+                            element.y =
+                              Math.round(parseFloat(y_final)) +
+                              Math.round(
+                                parseFloat(rotacionarFormData.current.y)
+                              );
                           }
                           setData((data) => [...data]);
                           changePopupVisibility();
-                          escalonarFormData.current = {};
+                          rotacionarFormData.current = {};
 
                           console.log(data);
                         });
@@ -231,32 +251,6 @@ export default () => {
                       type="default"
                       stylingMode="contained"
                     />
-                  </Item>
-                </Form>
-              </div>
-            </Item>
-            <Item>
-              <div id="x">
-                <Form colCount={2}>
-                  <Item
-                    dataField={"X"}
-                    editorType={"dxTextBox"}
-                    editorOptions={{
-                      stylingMode: "filled",
-                      placeholder: "X",
-                    }}
-                  >
-                    <Label visible={false} text="X" />
-                  </Item>
-                  <Item
-                    dataField={"X"}
-                    editorType={"dxTextBox"}
-                    editorOptions={{
-                      stylingMode: "filled",
-                      placeholder: "Y",
-                    }}
-                  >
-                    <Label visible={false} text="X" />
                   </Item>
                 </Form>
               </div>

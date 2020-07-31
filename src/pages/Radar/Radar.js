@@ -66,14 +66,6 @@ export default function () {
             <Item className="grid">
               <TransformFuncs />
             </Item>
-            <Item>
-              <Button
-                text="Clicar"
-                onClick={() => {
-                  console.log(chartRef.current);
-                }}
-              ></Button>
-            </Item>
           </Form>
 
           <Form colCount={1}>

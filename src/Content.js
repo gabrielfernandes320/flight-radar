@@ -4,16 +4,12 @@ import appInfo from "./app-info";
 import routes from "./app-routes";
 import { SideNavInnerToolbar as SideNavBarLayout } from "./layouts";
 import { Footer } from "./components";
+import { RadarPage } from "./pages";
 
 export default function () {
   return (
     <SideNavBarLayout title={appInfo.title}>
-      <Switch>
-        {routes.map(({ path, component }) => (
-          <Route exact key={path} path={path} component={component} />
-        ))}
-      </Switch>
-      <Footer></Footer>
+      <RadarPage></RadarPage>
     </SideNavBarLayout>
   );
 }
